@@ -1,6 +1,8 @@
 // Project1.cpp : 
-// Your names
-//
+// Jaine Perotti
+// Riley Smith
+// Levy Sanon
+///////////////////
 
 #include "Project1.h"
 
