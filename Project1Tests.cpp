@@ -8,6 +8,7 @@ using std::cout;
 using std::endl;
 
 
+
 void genericTests() 
 {
 	vector<Location *> locations;
@@ -18,25 +19,22 @@ void genericTests()
 						    { 'a', 'c', 't', 'g' } };
 						  
 	int score = findMatch( &locations, &letters1[0][0], 4, "not");
-						//looking for the word not
-						//score is based on case - 100% match is same letters same case
-	//code is graded based on how tests perform
 
-	assert( score == 0);			//assert is used to check condition.  if reult=false, program stops executing
-	assert( locations.size() == 0);	//should = 0 because 'not' is not in the array
+	assert( score == 0);
+	assert( locations.size() == 0);
 	cout << "test #1 completed" << endl;
 
 	locations.clear();
-	score = findMatch( &locations, &letters1[0][0], 4, "aa");	//aa is not found horizontally, but it is found vertically
-	assert( score == 300);		//score is 300 because you should find 'aa' three times
+	score = findMatch( &locations, &letters1[0][0], 4, "aa");
+	assert( score == 300);
 	assert( locations.size() == 3);
 	assert( locations[0]->ptr == &letters1[0][0]);
-	assert( locations[0]->score == 100);	
+	assert( locations[0]->score == 100);
 	assert( !locations[0]->horizontal);
 	assert( locations[1]->ptr == &letters1[1][0]);
 	assert( locations[1]->score == 100);
 	assert( !locations[1]->horizontal);
-	assert( locations[2]->ptr == &letters1[2][0]);	//corrected to 2 from 3
+	assert( locations[2]->ptr == &letters1[2][0]);
 	assert( locations[2]->score == 100);
 	assert( !locations[2]->horizontal);
 	cout << "test #2 completed" << endl;
@@ -132,17 +130,64 @@ void genericTests()
 
 void yourTests()		//you write 4 tests of your own
 {
-	//missing
+	vector<Location *> locations;
+
+	char letters1[4][4] = { { 'a', 'c', 'g', 't' },
+						    { 'a', 'c', 't', 'g' },
+						    { 'a', 'c', 'g', 't' },
+						    { 'a', 'c', 't', 'g' } };
+	
+	int score = findMatch( &locations, &letters1[0][0], 4, "cc");	
+	assert( score == 300);	
+	assert( locations.size() == 3);
+	assert( locations[0]->ptr == &letters1[0][1]);
+	assert( locations[0]->score == 100);	
+	assert( !locations[0]->horizontal);
+	assert( locations[1]->ptr == &letters1[1][1]);
+	assert( locations[1]->score == 100);
+	assert( !locations[1]->horizontal);
+	assert( locations[2]->ptr == &letters1[2][1]);	
+	assert( locations[2]->score == 100);
+	assert( !locations[2]->horizontal);
 	cout << "additional test #1 completed" << endl;
 
-	//missing
+	locations.clear();
+	score = findMatch( &locations, &letters1[0][0], 4, "tgtg");
+	assert( score == 100);
+	assert( locations.size() == 1);
+	assert( locations[0]->ptr == &letters1[0][3]);
+	assert( locations[0]->score == 100);
+	assert( locations[0]->horizontal);
 	cout << "additional test #2 completed" << endl;
 
-	//missing
+
+	locations.clear();
+	score = findMatch( &locations, &letters1[0][0], 4, "gt");
+	assert( score == 300);
+	assert( locations.size() == 3);
+	assert( locations[0]->ptr == &letters1[0][2]);
+	assert( locations[0]->score == 100);
+	assert( locations[0]->horizontal);
+	assert( locations[1]->ptr == &letters1[2][2]);
+	assert( locations[1]->score == 100);
+	assert( locations[1]->horizontal);
+	assert( locations[2]->ptr == &letters1[1][3]);
+	assert( locations[2]->score == 100);
+	assert( locations[2]->horizontal);
 	cout << "additional test #3 completed" << endl;
 
-	//missing
+
+	//wanted to try a test where it just fails instead of finding anything
+	locations.clear();
+	score = findMatch(&locations, &letters1[0][0], 4, "aZZ");
+	assert( locations[0]->ptr == &letters1[1][0]);
+	assert( locations[0]->score == 100);
+	assert( !locations[0]->horizontal);
+	assert( score == 0);
+	assert( locations.size() == 0);
+	cout << "test #8 completed" << endl;
 	cout << "additional test #4 completed" << endl;
+
 }
 
 int main()
