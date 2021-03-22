@@ -3,10 +3,17 @@
 // Riley Smith
 // Levy Sanon
 ///////////////////
-///TRYING THIS OUT?
-///????????CAN I SEE MY CHANGES????????????
 
 #include "Project1.h"
+#include <string>
+#include <vector>
+#include <iostream>
+#include <memory>
+
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector; 
 
 //locations : all the location where the word was found in letters
 //letter	: matrix of char [size][size], where you look for the word
@@ -40,10 +47,33 @@
 	Submission    : one submission per team
 */
 
+//findMatch looks for word in the grid (2-d array) 
+//locations holds everywhere you find the word
+//word is word youre looking for
+	
 int findMatch(vector<Location *> * locations, char *letters, int size, string word) {
+
 	int count = 0;
-	//add your code here
+	int score = 0;
+	bool horizontal = false;
+
+	int totalScore = 0;
 	
-	
-	return count;
+	Location * loc = new Location();
+
+	//the 2 dimensions array, is received as a ptr to the 
+	//1st character of the array
+	//to retrieve a specific line & column
+
+	int line = 1; //2nd line - 0 based
+	int col  = 2; //3rd column - 0 based
+
+	loc->ptr = &letters[ (line * size) + col ]; //this will 't'
+	loc->horizontal = true;
+	loc->score = 100;
+
+	locations->push_back( loc );
+	totalScore += loc->score;
+
+	return totalScore;
 }
