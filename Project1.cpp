@@ -9,6 +9,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <cmath>
 
 using std::cout;
 using std::endl;
@@ -52,28 +53,88 @@ using std::vector;
 //word is word youre looking for
 	
 int findMatch(vector<Location *> * locations, char *letters, int size, string word) {
+/* In genericTests():
+			vector<Location *> locations;
+			char letters1[4][4] = { { 'a', 'c', 'g', 't' },
+									{ 'a', 'c', 't', 'g' },
+									{ 'a', 'c', 'g', 't' },
+									{ 'a', 'c', 't', 'g' } };				*/
 
-	int count = 0;
-	int score = 0;
-	bool horizontal = false;
+	int totalScore = 0;		//cumulative score
+	int count = 0;			//counts how many matches there are
+	int score = 0;			//individual word score
+	int line  = 0;			//line of a match
+	int col = 0;			//column of a match
 
-	int totalScore = 0;
+	bool horizBool = false;		//true if match is horizontal, false if vertical
+	int length = word.size();	//size of the word we are searching for
+
+	char c;			//temporary character in for loop
+	string temp;	//temporary string in for loop
+
+	Location * loc = new Location();		//new dynamic object called loc, Location class which has members ptr, horizontal, & score
+
 	
-	Location * loc = new Location();
+	cout << endl << "word: " << word << "   length: " << length << endl;
 
-	//the 2 dimensions array, is received as a ptr to the 
-	//1st character of the array
-	//to retrieve a specific line & column
+	for(int i = 0; i < (size*size); i++){		//go through all 16 elements in letters (size=4)
 
-	int line = 1; //2nd line - 0 based
-	int col  = 2; //3rd column - 0 based
+		for(int j = 0; j < length; j++){
 
-	loc->ptr = &letters[ (line * size) + col ]; //this will 't'
-	loc->horizontal = true;
-	loc->score = 100;
 
-	locations->push_back( loc );
-	totalScore += loc->score;
+			if((i+j) > 15)		//don't go outside bounds of vector
+				break;
+					
+			c = letters[i+j];
+			temp = temp + c;
+
+		// letters[i] ==> if int i/4 has no remainder, you're in a new row
+		// I want to find a good way to stop the search from "running into" the next row
+		//	if( (remainder((i+j),size) == 0) && ((i+j) != 0))		
+		//		break;
+
+		}	//end nested for
+
+		if(temp == word){
+			cout << " match! ";
+
+			horizBool = true;
+			line = i/size;
+			score = 100;
+
+			//0,4,8,12 => column 0; 1,5,9,13 => column 1; 2,6,10,14 => column 2; 3,7,11,15 => column 3
+			if( (i == 0) || (i == 4) || (i == 8) || (i == 12) )
+				col = 0;
+			if ( (i == 1) || (i == 5) || (i == 9) || (i == 13) )
+				col = 1;
+			if ( (i == 2) || (i == 6) || (i == 10) || (i == 14) )
+				col = 2;
+			if ( (i == 3) || (i == 7) || (i == 11) || (i == 15) )
+				col = 3;
+			count++;
+
+			cout << "found at line:" << line << " column:" << col <<  " count: " << count << endl;
+
+			//if a match is found, save the (beginning of the) location of the match to loc->ptr
+			loc->ptr = &letters[ (line * size) + col ]; //this will 't'
+			//loc->ptr = &letters[i];
+			loc->horizontal = horizBool;	
+			loc->score = score;	
+
+			//cout << loc->ptr << " " << loc->horizontal << " " << loc->score << endl;
+
+			locations->push_back( loc );
+			totalScore += loc->score;
+			
+		}	//end if statement
+
+		//cout << temp << "  *  ";		//use this to print out temp as the vector is searched
+		temp = "";						//reset temp string
+		
+	}	//end for loop
+
+	cout << endl << "count: " << count << " total score: " << totalScore << endl << endl;
+
 
 	return totalScore;
 }
