@@ -64,14 +64,14 @@ string convertToLower(string word, int length){
 		lower[y] = word.at(y);			//extract each character from word and put in lower[]
 	}
 
-		//create lowercase version of the word being searched for
-		for(int x = 0; x < length; x++){
+	//create lowercase version of the word being searched for
+	for(int x = 0; x < length; x++){
 				
-			if(isupper(lower[x])){				//if the character is uppercase
-				lower[x] = tolower(lower[x]);	//convert to lowercase
-				isUpper++;						//keep track of how many uppercase letters have been found
-			}
-			wordLower = wordLower + lower[x];	//concatenate into new all-lowercase version of word
+		if(isupper(lower[x])){				//if the character is uppercase
+			lower[x] = tolower(lower[x]);	//convert to lowercase
+			isUpper++;						//keep track of how many uppercase letters have been found
+		}
+		wordLower = wordLower + lower[x];	//concatenate into new all-lowercase version of word
 	}
 
 	return wordLower;		//return lowercase version of word
@@ -102,6 +102,8 @@ int findMatch(vector<Location *> * locations, char *letters, int size, string wo
 
 	cout << endl << "word: " << word << "   length: " << length << endl;
 
+/////////////////////////////////////////HORIZONTAL SEARCH///////////////////////////////////////////////
+
 	for(int i = 0; i < size; i++){		//go through the rows
 
 		for(int j = 0; j < (size - length + 1); j++){	//go through the cols
@@ -116,7 +118,7 @@ int findMatch(vector<Location *> * locations, char *letters, int size, string wo
 			
 			//get the lowercase version of the word being searched for
 			wordLower = convertToLower(word, length);
-
+			
 			if((temp == word) || (temp == wordLower)){		//if temp is an exact match to word, or the all-lowercase version of word
 				cout << " horiz. match! ";
 				count++;
@@ -148,6 +150,59 @@ int findMatch(vector<Location *> * locations, char *letters, int size, string wo
 	}	//end for loop
 
 	cout << endl << "count: " << count << " total score: " << totalScore << endl << endl;
+
+///////////////////////////////////////////////VERTICAL SEARCH////////////////////////////////////////////////////
+
+
+	for(int j = 0; j < size; j++){		//go through the cols - loops 4x
+																			   	
+		for(int i = 0; i < (size - length + 1); i++){	//go through the rows 
+									   										
+			// form word
+			offset = (i * size) + j;			// starting position in letters  
+
+			for(int k = 0; k < length; ++k){
+				
+				c = letters[offset + 4*k];		//extract a character c, from letters
+				temp = temp + c;				//concatenate c with temp, which holds a possible match for comparison				
+			}
+
+						//get the lowercase version of the word being searched for
+			wordLower = convertToLower(word, length);
+
+			if((temp == word) || (temp == wordLower)){		//if temp is an exact match to word, or the all-lowercase version of word
+				cout << " vert. match! ";
+				count++;
+
+
+				Location * loc = new Location();		//new dynamic object called loc
+				horizBool = false;						//horizontal match = false					
+
+				//score the match
+				score = (((100.0/length)/2.0) * isUpper) + ((100.0/length) * (length - isUpper));
+				
+				cout << "found at row:" << i << " column:" << j << " off:" << offset <<  " count: " << count << endl;
+				
+
+				//dynamic object loc holds address of a match, horizBool, and score
+				loc->ptr = &letters[offset];	//if a match is found, save the (beginning of the) location of the match to loc->ptr
+				loc->horizontal = horizBool;	//if a horizontal match is NOT found, horizBool = false
+				loc->score = score;				//score of the individual match
+
+				locations->push_back( loc );	//push_back (add) another object, loc, to the locations vector
+				totalScore += loc->score;		//sum up all the scores to get a total score
+			}
+
+			
+			//cout << "temp: " << temp << endl;
+			temp = "";						//reset temp string
+			wordLower = "";					//reset lowercase word string
+			isUpper = 0;					//reset uppercase letter counter
+
+		}
+	}
+
+	cout << endl;
 
 
 	return totalScore;

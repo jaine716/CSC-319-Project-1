@@ -24,7 +24,7 @@ void genericTests()
 	assert( locations.size() == 0);
 	cout << "test #1 completed" << endl;
 
-/*	locations.clear();
+	locations.clear();
 	score = findMatch( &locations, &letters1[0][0], 4, "aa");
 	assert( score == 300);
 	assert( locations.size() == 3);
@@ -58,7 +58,7 @@ void genericTests()
 	assert( locations[0]->ptr == &letters1[0][0]);
 	assert( locations[0]->score == 100);
 	assert( !locations[0]->horizontal);
-	cout << "test #4 completed" << endl; 	*/
+	cout << "test #4 completed" << endl; 	
 
 	locations.clear();
 	score = findMatch(&locations, &letters1[0][0], 4, "acgt");
