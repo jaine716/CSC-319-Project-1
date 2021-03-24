@@ -137,56 +137,32 @@ void yourTests()		//you write 4 tests of your own
 						    { 'a', 'c', 'g', 't' },
 						    { 'a', 'c', 't', 'g' } };
 	
-	int score = findMatch( &locations, &letters1[0][0], 4, "cc");	
-	assert( score == 300);	
-	assert( locations.size() == 3);
-	assert( locations[0]->ptr == &letters1[0][1]);
-	assert( locations[0]->score == 100);	
-	assert( !locations[0]->horizontal);
-	assert( locations[1]->ptr == &letters1[1][1]);
-	assert( locations[1]->score == 100);
-	assert( !locations[1]->horizontal);
-	assert( locations[2]->ptr == &letters1[2][1]);	
-	assert( locations[2]->score == 100);
-	assert( !locations[2]->horizontal);
-	cout << "additional test #1 completed" << endl;
-
 	locations.clear();
-	score = findMatch( &locations, &letters1[0][0], 4, "tgtg");
-	assert( score == 100);
-	assert( locations.size() == 1);
-	assert( locations[0]->ptr == &letters1[0][3]);
-	assert( locations[0]->score == 100);
-	assert( locations[0]->horizontal);
-	cout << "additional test #2 completed" << endl;
-
-
-	locations.clear();
-	score = findMatch( &locations, &letters1[0][0], 4, "gt");
-	assert( score == 300);
-	assert( locations.size() == 3);
-	assert( locations[0]->ptr == &letters1[0][2]);
-	assert( locations[0]->score == 100);
-	assert( locations[0]->horizontal);
-	assert( locations[1]->ptr == &letters1[2][2]);
-	assert( locations[1]->score == 100);
-	assert( locations[1]->horizontal);
-	assert( locations[2]->ptr == &letters1[1][3]);
-	assert( locations[2]->score == 100);
-	assert( locations[2]->horizontal);
-	cout << "additional test #3 completed" << endl;
-
-
-	//wanted to try a test where it just fails instead of finding anything
-	locations.clear();
-	score = findMatch(&locations, &letters1[0][0], 4, "aZZ");
-	assert( locations[0]->ptr == &letters1[1][0]);
-	assert( locations[0]->score == 100);
-	assert( !locations[0]->horizontal);
-	assert( score == 0);
+	int score = findMatch(&locations, &letters1[0][0], 4, "aaaaa");
+	assert( score == -1);
 	assert( locations.size() == 0);
-	cout << "test #8 completed" << endl;
-	cout << "additional test #4 completed" << endl;
+	cout << "additional letter test completed" << endl;
+
+	locations.clear();
+	score = findMatch(&locations, &letters1[0][0], 4, "AAAA");
+	assert( score == 50);
+	assert( locations.size() == 1);
+	assert( locations[0]->ptr == &letters1[0][0]);
+	assert( locations[0]->score == 50);
+	assert( !locations[0]->horizontal);
+	cout << "Captial test completed" << endl;
+
+	locations.clear();
+	score = findMatch( &locations, &letters1[0][0], 4, "1234");
+	assert( score == -1);
+	assert( locations.size() == 0);
+	cout << "Number test completed" << endl;
+
+	locations.clear();
+	score = findMatch( &locations, &letters1[0][0], 4, "@aa");
+	assert( score == -1);
+	assert( locations.size() == 0);
+	cout << "Number test completed" << endl;
 
 }
 
