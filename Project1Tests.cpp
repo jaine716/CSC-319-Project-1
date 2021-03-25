@@ -141,7 +141,7 @@ void yourTests()		//you write 4 tests of your own
 	int score = findMatch(&locations, &letters1[0][0], 4, "aaaaa");
 	assert( score == -1);
 	assert( locations.size() == 0);
-	cout << "additional letter test completed" << endl;
+	cout << "Custom test #1: oversize test completed." << endl;
 
 	locations.clear();
 	score = findMatch(&locations, &letters1[0][0], 4, "AAAA");
@@ -150,19 +150,19 @@ void yourTests()		//you write 4 tests of your own
 	assert( locations[0]->ptr == &letters1[0][0]);
 	assert( locations[0]->score == 50);
 	assert( !locations[0]->horizontal);
-	cout << "Captial test completed" << endl;
+	cout << "Custom test #2: capital letter test completed." << endl;
 
 	locations.clear();
 	score = findMatch( &locations, &letters1[0][0], 4, "1234");
 	assert( score == -1);
 	assert( locations.size() == 0);
-	cout << "Number test completed" << endl;
+	cout << "Custom test #3: number test completed." << endl;
 
 	locations.clear();
 	score = findMatch( &locations, &letters1[0][0], 4, "@aa");
 	assert( score == -1);
 	assert( locations.size() == 0);
-	cout << "Number test completed" << endl;
+	cout << "Custom test #4: special character test completed" << endl;
 
 }
 
