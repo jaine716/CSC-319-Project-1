@@ -162,7 +162,7 @@ void yourTests()		//you write 4 tests of your own
 	score = findMatch( &locations, &letters1[0][0], 4, "@aa");
 	assert( score == -1);
 	assert( locations.size() == 0);
-	cout << "Custom test #4: special character test completed" << endl;
+	cout << "Custom test #4: special character test completed" << endl << endl;
 
 }
 

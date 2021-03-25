@@ -49,7 +49,7 @@ using std::vector;
 */
 
 
-int isUpper = 0;	//global variable, holds how many uppercase letters are in word that's being searched for
+//int isUpper = 0;	//global variable, holds how many uppercase letters are in word that's being searched for
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +59,7 @@ int isUpper = 0;	//global variable, holds how many uppercase letters are in word
 //					parameters.  The function then converts that word into all lowercase letters (string wordLower), returning  
 //					it to the calling function findMatch().  
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-string convertToLower(string word, int length){
+string convertToLower(string word, int length, int *isUpper){
 
 
 	string wordLower;		//holds lowercase version of word
@@ -74,7 +74,7 @@ string convertToLower(string word, int length){
 				
 		if(isupper(lower[x])){				//if the character is uppercase
 			lower[x] = tolower(lower[x]);	//convert to lowercase
-			isUpper++;						//keep track of how many uppercase letters have been found
+			(*isUpper)++;					//keep track of how many uppercase letters have been found
 		}
 		wordLower = wordLower + lower[x];	//concatenate into new all-lowercase version of word
 	}
@@ -107,14 +107,14 @@ bool isValid(string word, int length, int size){	//check if the word being searc
             AlphaValid = false;			//if not alphabetical, AlphaValid = false
             x = length;					//exits the for-loop as soon as non-alphabetical character is found
 
-			cout << "Word " << word << " contains invalid characters." << endl;
+			cout << "\tthe word " << word << " contains invalid characters." << endl;
         }            
     }
 
 
 	if(length > size){					//check the length of the word compared to size
 		AlphaValid = false;
-		cout << "Word " << word << " is " << (length-size) << " character(s) too long." << endl;
+		cout << "\tthe word " << word << " is " << (length-size) << " character(s) too long." << endl;
 	}
 
     return AlphaValid;					//return true if size and characters of word are valid, false if invalid
@@ -152,10 +152,12 @@ int findMatch(vector<Location *> * locations, char *letters, int size, string wo
 	string temp;				//temporary string in for loop
 	string wordLower;			//holds lowercase version of the word being searched for
 
+	int isUpper = 0;			//keeps track of how many characters are uppercase
+
 	int vert_offset = 0;            // Vertical offset to go through the cols for vertical check
 	
-
-	cout << endl << "word: " << word << "   length: " << length << endl;
+	cout << endl << "---------------------------------------------" << endl;
+	cout << endl << "word: " << word << "   length: " << length << endl << endl;
 
 	if(bool validWord = isValid(word, length, size)){ 		//perform searches only if word is valid (proper length and characters)
 
@@ -174,10 +176,10 @@ int findMatch(vector<Location *> * locations, char *letters, int size, string wo
 				}
 				
 				//get the lowercase version of the word being searched for
-				wordLower = convertToLower(word, length);
+				wordLower = convertToLower(word, length, &isUpper);
 				
 				if((temp == word) || (temp == wordLower)){		//if temp is an exact match to word, or the all-lowercase version of word
-					cout << " horizontal match! ";
+					cout << "\thorizontal match! ";
 					count++;
 
 
@@ -225,12 +227,11 @@ int findMatch(vector<Location *> * locations, char *letters, int size, string wo
 				}
 
 				//get the lowercase version of the word being searched for
-				wordLower = convertToLower(word, length);
+				wordLower = convertToLower(word, length, &isUpper);
 
 				if ( ( temp == word ) || ( temp == wordLower ) ){		//if temp is an exact match to word, or the all-lowercase version of word
 					
-					cout << " vertical match! ";
-					
+					cout << "\tvertical match! ";		
 					count++ ;
 				
 					Location * loc = new Location();		//new dynamic object called loc
@@ -242,15 +243,13 @@ int findMatch(vector<Location *> * locations, char *letters, int size, string wo
 
 					cout << "found at row:" << i << " column:" << j << endl;
 
-
 					//dynamic object loc holds address of a match, horizBool, and score
 					loc->ptr = &letters[offset];	//if a match is found, save the (beginning of the) location of the match to loc->ptr					
 					loc->horizontal = horizBool;	//if a vertical match is found, horizBool = false					
 					loc->score = score;				//score of the individual match					
 					locations->push_back( loc );	//push_back (add) another object, loc, to the locations vector
 					
-					totalScore += loc->score;		//sum up all the scores to get a total score
-				
+					totalScore += loc->score;		//sum up all the scores to get a total score			
 				}
 				
 				temp = "";						//reset temp string		
@@ -258,19 +257,18 @@ int findMatch(vector<Location *> * locations, char *letters, int size, string wo
 				isUpper = 0;					//reset uppercase letter counter				
 				vert_offset = 0;				//reset vertical offset
 
-
 			}	//end for loop
 
-		}	//end for loop
-	}	//end if
+		}		//end for loop
+	}			//end if
 	else{
 		totalScore = -1;
 	}
 
 	if(totalScore == 0)
-		cout << " match not found. " << endl;
+		cout << "\tmatch not found. " << endl;
 
-	cout << endl << "count: " << count << " total score: " << totalScore << endl << endl;
+	cout << endl << "\ttotal matches: " << count << " total score: " << totalScore << endl << endl;
 
 	return totalScore;
 }
